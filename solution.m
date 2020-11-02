@@ -16,6 +16,9 @@ S=solve(eq1,eq2,eq3,k1,k2,k3);
 k1 = double(S.k1);
 k2 = double(S.k2);
 k3 = double(S.k3);
+k1A = k1;
+k2A = k2;
+k3A = k3;
 
 % find missing link lengths
 d = 410;
@@ -85,11 +88,29 @@ ylabel('Transmission angle (degrees)')
 %set(gcf,'Visible','on')
 set(gca, 'FontSize', 20)
 
-%part c
+%comparison graph
 plotyy(inputAngle, transAngleA, inputAngle, transAngleB)
 title('Comparison of structural Error in relation to input angle')
 xlabel('Input Angle (degrees)')
 ylabel('Transmission Angle (degrees)')
+set(gcf,'Position', get(0,'Screensize'));
+%set(gcf,'Visible','on')
+set(gca, 'FontSize', 20)
+
+%part c
+theta2 = 15:5:165
+theta4 = 65 + (0.43*theta2);
+eA = zeros(1,31)
+eB = zeros(1,31)
+for j = 1:length(theta2)
+    eA(j) = k1A * cosd(theta4(j)) - k2A * cosd(theta2(j)) + k3A - cosd(theta2(j) - theta4(j))
+    eB(j) = k1 * cosd(theta4(j)) - k2 * cosd(theta2(j)) + k3 - cosd(theta2(j) - theta4(j))
+end
+ax = plotyy(theta2,eA,theta2,eB)
+title('Comparison of structural Error in relation to input angle')
+xlabel('Input Angle (degrees)')
+ylabel(ax(1),'Structural Error in A')
+ylabel(ax(2),'Structural Error in B')
 set(gcf,'Position', get(0,'Screensize'));
 set(gcf,'Visible','on')
 set(gca, 'FontSize', 20)
