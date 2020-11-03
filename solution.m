@@ -1,5 +1,6 @@
 %part a
 %three precision points chebysev spacing%
+theta2 = zeros(1,5)
 for j = 1:3
     theta2(j) = 0.5*(15 + 165) - 0.5 * (165 - 15) * cosd((180*(2*j - 1))/6);
 end
@@ -34,8 +35,8 @@ plot(inputAngle, transAngleA, 'r', 'LineWidth',2)
 title('Transmission angle vs Input angle')
 xlabel('Input angle (degrees)')
 ylabel('Transmission angle (degrees)')
-%set(gcf,'Position', get(0,'Screensize'));
-%set(gcf,'Visible','on')
+set(gcf,'Position', get(0,'Screensize'));
+set(gcf,'Visible','on')
 set(gca, 'FontSize', 20)
 
 %part b
@@ -50,7 +51,6 @@ theta4 = 65 + (0.43*theta2);
 %get k1 k2 k3
 A = zeros(3,3)
 B = zeros(3,1)
-ab = 0
 for i = 1:5
     A(1,1) = A(1,1) + cosd(theta4(i)).^2
     A(1,2) = A(1,2) -cosd(theta4(i)) * cosd(theta2(i))
@@ -84,17 +84,18 @@ plot(inputAngle, transAngleB, 'r', 'LineWidth',2)
 title('Transmission angle vs Input angle')
 xlabel('Input angle (degrees)')
 ylabel('Transmission angle (degrees)')
-%set(gcf,'Position', get(0,'Screensize'));
-%set(gcf,'Visible','on')
+set(gcf,'Position', get(0,'Screensize'));
+set(gcf,'Visible','on')
 set(gca, 'FontSize', 20)
 
 %comparison graph
-plotyy(inputAngle, transAngleA, inputAngle, transAngleB)
-title('Comparison of structural Error in relation to input angle')
+ax = plotyy(inputAngle, transAngleA, inputAngle, transAngleB)
+title('Comparison of transmission angle in relation to input angle')
 xlabel('Input Angle (degrees)')
-ylabel('Transmission Angle (degrees)')
+ylabel(ax(1), 'Transmission Angle (degrees) A')
+ylabel(ax(2), 'Transmission Angle (degrees) B')
 set(gcf,'Position', get(0,'Screensize'));
-%set(gcf,'Visible','on')
+set(gcf,'Visible','on')
 set(gca, 'FontSize', 20)
 
 %part c
