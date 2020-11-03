@@ -20,6 +20,7 @@ k3 = double(S.k3);
 k1A = k1;
 k2A = k2;
 k3A = k3;
+fprintf("k1 %d k2 %d k3 %d", k1A, k2A, k3A)
 
 % find missing link lengths
 d = 410;
