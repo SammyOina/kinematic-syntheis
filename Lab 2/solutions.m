@@ -40,26 +40,27 @@ set(gca, 'FontSize', 20)
 
 %part c
 %relationship of theta2 to theta4
-x = theta2
-y = theta4
-for i= 1:5
-    xy(i) = x(i) * y(i)
-end
-ySquared = y.^2
-xSquared = x.^2
-aR = (sum(y)*sum(xSquared) - sum(x)*sum(xy)) / (5 * sum(xSquared) - sum(x).^2)
-bR = (5 * sum(xy) - sum(x) * sum(y)) / (5 * sum(xSquared) - sum(x).^2)
-
 theta2C = 40:1:60
-theta4C = aR + bR * theta2C
+theta4CN = zeros(1,21)
+theta4CP = zeros(1,21)
+for j = 1:21
+    Ar = sind(theta2C(j))
+    Br = cosd(theta2C(j)) - k1
+    Cr = k3 - k2 * cosd(theta2C(j))
+    theta4CN(j) = 2 * atand((Ar - sqrt(Ar.^2 + Br.^2 - Cr.^2))/(Br+Cr))
+    theta4CP(j) = 2 * atand((Ar + sqrt(Ar.^2 + Br.^2 - Cr.^2))/(Br+Cr))
+end
 sError = zeros(1,21)
+sError2 = zeros(1,21)
 %get structural errors
 for j = 1:length(theta2C)
-    sError(j) = k1 * cosd(theta4C(j)) - k2 * cosd(theta2C(j)) + k3 - cosd(theta2C(j) - theta4C(j))
+    sError(j) = k1 * cosd(theta4CP(j)) - k2 * cosd(theta2C(j)) + k3 - cosd(theta2C(j) - theta4CP(j))
+    sError2(j) = k1 * cosd(theta4CN(j)) - k2 * cosd(theta2C(j)) + k3 - cosd(theta2C(j) - theta4CN(j))
 end
 figure(2)
-plot(theta2C, sError, 'r', 'LineWidth',2)
-title('Input angle vs Structural Errors')
+%plot(theta2C, sError, 'r', 'LineWidth',2)
+plotyy(theta2C, sError, theta2C, sError2)
+title('Structural Errors vs Input angle')
 xlabel('Input angle (degrees)')
 ylabel('Structural Errors')
 set(gcf,'Position', get(0,'Screensize'));
